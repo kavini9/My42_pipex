@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/27 14:51:32 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/10/10 19:02:53 by wweerasi         ###   ########.fr       */
+/*   Created: 2024/10/10 14:54:57 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/10/10 18:47:26 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(int argc, char **argv, char **envp)
+#ifndef PIPEX_H
+# define PIPEX_H
+
+# include <unistd.h>
+
+typedef struct s_pipex
 {
-	t_pipex	pipex;
+	char *infile;
+	char *outfile;
+	char **cmd
+} t_pipex
 
-	if (argc != 5){
-		ft_putendl_fd("Error: Invalid format detected. Please use the 
-				correct format:\n./pipex infile cmd1 cmd2 outfile\n", 2);
-		exit(EXIT_FAILURE);
-	}
-	pipex();
-}
-
-
+#endif
