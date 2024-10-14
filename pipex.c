@@ -10,16 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "pipex.h"
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 
 	if (argc != 5){
-		ft_putendl_fd("Error: Invalid format detected. Please use the 
-				correct format:\n./pipex infile cmd1 cmd2 outfile\n", 2);
-		exit(EXIT_FAILURE);
+		ft_putendl_fd("# Output: Error: Invalid number of arguments.\n
+			# Usage: ./pipex file1 cmd1 cmd2 file2", 2);
+		exit(EXIT_SUCCESS);
 	}
 	pipex();
 }
+
+char	**get_arr_path(char **envp)
+{
+	char	**arr_path;
+
+	if (!envp)
+		return (NULL); //check what kind of error this may cause
+	while (*envp && ft_strncmp(*envp, "PATH=", 5))
+		*envp++;
+	arr_path = ft_split( *envp + 5, ':');
+	if (!arr_path)
+		
+}
+	
+
 
 
