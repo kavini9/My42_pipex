@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:51:32 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/10/10 19:02:53 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:35:13 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	main(int argc, char **argv, char **envp)
 	pipex();
 }
 
+void pipex()
+
 char	**get_arr_path(char **envp)
 {
 	char	**arr_path;
@@ -34,9 +36,19 @@ char	**get_arr_path(char **envp)
 		*envp++;
 	arr_path = ft_split( *envp + 5, ':');
 	if (!arr_path)
-		
+		//erro message cz arr_path is null
+	return (arr_path);
 }
-	
+
+
+char 	**parse_cmd(char **argv[], int start,  int end)
+{
 
 
 
+
+
+//command handling
+//if argv[i] strchr('/') true ==> split('/')
+//if arg[last] strchr (' ') true ==> split(' ')
+//

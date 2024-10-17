@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 12:04:39 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/10/16 19:08:47 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:35:16 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ int main()
 {
 	char *infile = "infile.txt";
 	char *outfile = "outfile.txt";
-	char **cmd1 = {"sort"};
-	char **cmd2 = {"grep", "x"};
-	char **cmd3 = {"grep", "y"};
-	char **cmd4 = {"wc", "-l"};
+	char **cmd1 = {"/bin/sort", {"ls", "-l", NULL}, NULL};
+	char **cmd2 = {"/bin/grep", {"grep", "x", NULL}, NULL};
+	char **cmd3 = {"/bin/grep", {"grep", "y", NULL}, NULL};
+	char **cmd4 = {"/bin/wc", {"wc","-l", NULL}, NULL};
 	char **cmd = {cmd1, cmd2, cmd3, cmd4, cmd5};
+	int *pids[5];//might have to malloc
 	int pfds[2];
 	int procnum = 0;
 	pid_t pid = 0;
@@ -41,7 +42,27 @@ int main()
 				perror("fork");
 				exit(1);
 			}
+			pids[procnum] = pid;
+		}
 	}
+	int i = 0;
+	while (pids[i])
+	{
+		if (pid[i] == pids)
+		{
+			close(pfds[0]);
+			dup2(pfds[1],0);
+			execve(cmd[i])
+		}
+	}
+
+	if (pids[0] == 0)
+	{
+		while(wait() > 0)
+			usleep(1);
+	}
+	
+
 
 
 
