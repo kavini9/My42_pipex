@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:51:32 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/10/17 17:35:13 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/10/20 18:01:50 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **envp)
 
 void pipex_init(t_pipex *pipex, int argc, char **argv, char **envp)
 {
-	pipex -> infile = something;
+	pipex -> infile = ;
 	pipex -> outfile = somethingelse;
 	pipex -> cmd_count = argc - 3;
 	if (argc > 5 && ft_strncmp(argv[1], "here_doc", 8) == 0)
