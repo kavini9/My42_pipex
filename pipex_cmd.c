@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 15:32:07 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/10/20 19:14:59 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:38:31 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,19 @@ char	**get_arr_path(char **envp)
 	return (arr_path);
 }
 
-char	**get_arr_cmd(char **argv, int cmd_count,int heredoc)
+char	**get_arr_cmd(char **argv, t_pipex *pipex)
 {
-	if (strchr(argv[i + 2 + heredoc]), ' ')
-	{
-		cmd_arr = ft_split(argv[i +2 + heredoc], ' ');
-	}
-	if (!cmd_arr)
-		printf("cmd_arr crashed at split");
-	if (!str(cmd_arr[0],'/'))
-		path = get_cmd_path(pipex -> path, cmd_arr[0]);
-	else
-		path = cmd_arr[0];
+	int	i;
 
+	i = 0;
+	pipex -> cmd = malloc((pipex -> cmd_count + 1) * sizeof(*char));
+	while(i < pipex -> cmd_count)
+		if (strchr(argv[i + 2 + heredoc]), ' ')
+			pipex -> cmd[i] = ft_split(argv[i +2 + heredoc], ' ');
+		if (!cmd_arr[i])
+			printf("cmd_arr crashed at split");
+		if (!strchr(cmd_arr[i][0],'/'))
+			path = get_cmd_path(pipex);
 }
 
 int main(int argc, char **argv, char **envp)

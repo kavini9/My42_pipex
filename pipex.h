@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:54:57 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/10/20 15:31:49 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:38:27 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@
 
 typedef struct s_pipex
 {
-	int	infile;
-	int	outfile;
+	int	infd;
+	int	outfd;
+	int	heredoc;
 	int	cmd_count;
-	char	**cmd
+	pid_t	pid;
+	//char	***cmd
 } t_pipex
 
 #endif
