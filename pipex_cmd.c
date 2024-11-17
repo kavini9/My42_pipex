@@ -14,23 +14,6 @@
 #include <stdlib.h>
 
 char	**ft_split(char const *s, char c);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
-
-char	**get_path_array(char **envp)
-{
-	char	**arr_path;
-
-	arr_path = NULL;
-	if (!envp || !*envp)
-		return (NULL); //check what kind of error this may cause
-	while (*envp && ft_strncmp(*envp, "PATH=", 5))
-		envp++;
-	if (*envp)
-		arr_path = ft_split( *envp + 5, ':');
-	if (!arr_path)
-		perror("arr_path = ft_split crashed");
-	return (arr_path);
-}
 
 char	*get_cmd_path(char *cmd, char **arr_path)
 {
@@ -41,35 +24,38 @@ char	*get_cmd_path(char *cmd, char **arr_path)
 	{
 		cmd_path = ft_strjoin("/", cmd);
 		tmp = cmd_path;
-		if (cmd_path) //took tmp out to avoid tmp being unused if condition is not satified. also to get rid of curly brackets. Hate curly brackets.
+		if (cmd_path)
 			cmd_path = ft_strjoin(*arr_path,cmd_path);
-		free(tmp); //might cause double free. 
+		if (tmp)
+			free(tmp);
 		if (!cmd_path)
 			break;
-		if (access(cmd_path, F_OK) == 0 && access(*cmd_path, X_OK = 0))
+		if (access(cmd_path, F_OK | X_OK) == 0)
 			return (cmd_path);
+		free(cmd_path);
 		arr_path++;
 	}
 	return (NULL);
 }
-	
 
-
-char	**get_cmd_array(int cmd_no, t_pipex *pipex)
+void execute_cmd(int cmd_no, t_pipex *pipex)
 {
 	char **cmd_arr;
 	char *path;
 
+	cmd_arr = pipex -> cmd_arr;
+	path = pipex -> path;
 	cmd_arr = ft_split(pipex -> av[cmd_no + 2 + heredoc], ' ');
-	if (!cmd_arr)
-		perror("cmd_arr crashed at split");
+	if (!cmd_arr || !*cmd_arr)
+		pipex_error("CMDARRAY_ERROR");
 	if (!ft_strchr(*cmd_arr,'/'))
 		path = get_cmd_path(*cmd_arr, pipex -> arr_path);
-
-
-
-
-	
+	else if (access(*cmd_arr, F_OK | R_OK | X_OK) == 0)
+		path = ft_strdup(*cmd_arr);
+	if (!path)
+		pipex_error("PATH_ERROR"); // free cmd_arr
+	execve(path, cmd_arr, pipex -> envp);
+	pipex_error("EXECVE_FAIL);	
 }
 
 int main(int argc, char **argv, char **envp)
