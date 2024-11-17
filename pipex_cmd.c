@@ -40,17 +40,17 @@ char	*get_cmd_path(char *cmd, char **arr_path)
 	while(*arr_path)
 	{
 		cmd_path = ft_strjoin("/", cmd);
-		if (!cmd_path)
-			break;
 		tmp = cmd_path;
-		cmd_path = ft_strjoin(*arr_path,cmd);
-		free(tmp);
+		if (cmd_path) //took tmp out to avoid tmp being unused if condition is not satified. also to get rid of curly brackets. Hate curly brackets.
+			cmd_path = ft_strjoin(*arr_path,cmd_path);
+		free(tmp); //might cause double free. 
 		if (!cmd_path)
 			break;
 		if (access(cmd_path, F_OK) == 0 && access(*cmd_path, X_OK = 0))
 			return (cmd_path);
+		arr_path++;
 	}
-
+	return (NULL);
 }
 	
 
