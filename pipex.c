@@ -28,21 +28,14 @@ int	main(int ac, char **av, char **envp)
 
 
 
-void fd_redirect(int i, t_pipex pipex)
+void redirect_io(int i, t_pipex pipex)
 {
 	if (i == 0)
-	{
-		dup2(pipex -> infd, STDIN_FILENO);
-		dup2(pipex -> pfds[1], STDOUT_FILENO);
-		close(pipex -> pfds[0]);
-		close(pipex -> infd);
-	}
+		dup_io(pipex, pipex -> infd, pipex -> pfds[1]); 
 	if (i == cmd_count - 1)
-	{
-		dup2(pipex -> pfds[i * 2], STDIN_FILENO);
-		dup2(pipex -> outfd, STDOUT_FILENO);
-		close(pipe -> pfds[i * 2]);
-
+		dup_io(pipex, pipex -> pfds[(i - 1) * 2], pipex -> outfd);
+	else
+		dup_io(pipex, pipex -> pfds[(i - 1) * 2], pipex -> pfds[(i * 2) + 1]);
 	}
 }
 
@@ -52,13 +45,15 @@ void pipex(t_pipex pipex)
 	pid_t	pid;
 
 	i = 0;
-	while ((++i) <= pipex -> cmd_count)
+	while (i < pipex -> cmd_count)
 	{
 		pid = fork();
 		if (pid < 0)
 			pipex_error("Fork: "));
 		else if (pid == 0)
+			redirect_io(i, pipex);
 			execute_cmd(i, pipex);
+		i++;
 	}
 
 }
