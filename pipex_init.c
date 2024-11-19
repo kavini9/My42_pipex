@@ -2,23 +2,21 @@
 char	**ft_split(char const *s, char c);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
-int *init_pipes(t_pipex *pipex)
+void	init_pipes(t_pipex *pipex)
 {
   int i;
 
   i = 0;
   pipex -> pfds = malloc(2 * ( pipex -> cmd_count - 1) * sizeof(int));
-  if (!pfds)
-    return (NULL);
+  if (!pipex -> pfds)
+    pipex_error ("pipe_malloc failed");
   while ( i < pipex -> cmd_count - 1)
   {
-    
-  }
+    if (pipe( pipex -> pfds[2 * i] < 0)
+	    pipex_error("PIPE_ERROR);
+	i++;
+  }	    
 }
-
-
-
-
 
 char	**get_path_array(char **envp)
 {
