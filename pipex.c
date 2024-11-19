@@ -26,6 +26,15 @@ int	main(int ac, char **av, char **envp)
 	pipex(&pipex);
 }
 
+void	dup_io(t_pipex *data, int infd, int outfd)
+{
+	if (dup2(infd, STDIN) == -1)
+		pipex_error("dup failed);
+	if (dup2(write_fd, STDOUT) == -1)
+		pipex_error("dup failed);
+	close(infd);
+	close(outfd);
+}
 
 
 void redirect_io(int i, t_pipex pipex)
@@ -36,7 +45,8 @@ void redirect_io(int i, t_pipex pipex)
 		dup_io(pipex, pipex -> pfds[(i - 1) * 2], pipex -> outfd);
 	else
 		dup_io(pipex, pipex -> pfds[(i - 1) * 2], pipex -> pfds[(i * 2) + 1]);
-	}
+	
+
 }
 
 void pipex(t_pipex pipex)
