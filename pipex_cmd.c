@@ -57,7 +57,8 @@ void execute_cmd(int cmd_no, t_pipex *pipex)
 	execve(path, cmd_arr, pipex -> envp);
 	pipex_error("EXECVE_FAIL);	
 }
-
+		
+/*
 int main(int argc, char **argv, char **envp)
 {
 	char **path_array;
@@ -86,3 +87,4 @@ int main(int argc, char **argv, char **envp)
 	path_array = NULL;
 
 }
+*/
