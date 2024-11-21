@@ -1,20 +1,25 @@
-void	close_pipe_arr(t_pipex *pipex)
+void	close_pfds(t_pipex *pipex)
 {
-  int *fd;
-
-  fd = pipex -> pfds;
-	while (*fd)
-  {
-		close(*fd);
-    fd++;
-  }
+	int i;
+	i = 0;
+	while (i < pipex -> cmd_count - 1) //can this be zero at somepoint after redirecting
+	{
+		if (pipex -> pfds[2 * i] > 0)
+			close(pipex -> pfds[2 * i]);
+		if (pipex -> pfds[2 * i + 1] > 0)
+			close(pipex -> pfds[2 * i + 1]);
+		else
+			break;              //to be used if pipes are not created correctly and program exits midway in pipe init function
+		i++;
+	}
 	free(pipex -> pfds);
+	pipex -> pfds = NULL;
 }
 
 void	pipex_error(const char *err_note, t_pipex *pipex)
 {
 	perror(err_note);
-	close_all_pipes(pipex);
+	close_pdfs(pipex);
   	free(pipex -> arr_path);
   	free(pipex -> path);
   	free_arr(pipex -> cmd_arr);
