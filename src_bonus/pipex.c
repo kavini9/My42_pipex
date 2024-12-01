@@ -6,17 +6,17 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:51:32 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/11/14 19:54:51 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/01 05:18:26 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../includes/pipex_bonus.h"
 
 int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
 
-	if (ac != 5)
+	if (ac < 5)
 	{
 		ft_putendl_fd("# Output: Error: Invalid number of arguments.\n
 			# Usage: ./pipex file1 cmd1 cmd2 file2", 2);
@@ -24,6 +24,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	pipex_init(&pipex, ac, av, envp);
 	pipex(&pipex);
+	pipex_exit(&pipex);
 }
 
 void	dup_io(t_pipex *pipex, int rd_fd, int wr_fd)
@@ -34,7 +35,6 @@ void	dup_io(t_pipex *pipex, int rd_fd, int wr_fd)
 		pipex_error("dup failed");
 }
 
-
 void redirect_io(int i, t_pipex pipex)
 {
 	if (i == 0)
@@ -43,17 +43,17 @@ void redirect_io(int i, t_pipex pipex)
 		dup_io(pipex, pipex -> pfds[(i - 1) * 2], pipex -> outfd);
 	else
 		dup_io(pipex, pipex -> pfds[(i - 1) * 2], pipex -> pfds[(i * 2) + 1]);
-	close_pipes(pipex)
+	close_pfds(pipex)
 }
 
 int	wait_child(pid_t pid)
 {
 	int	status;
 
-	waitpid(pid, &status, 0);
+
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	return (FAILSTD);
+	return ();
 }
 
 void pipex(t_pipex pipex)
@@ -66,7 +66,7 @@ void pipex(t_pipex pipex)
 	{
 		pid = fork();
 		if (pid < 0)
-			pipex_error("Fork: "));
+			pipex_error("Fork: ");
 		else if (pid == 0)
 		{
 			redirect_io(i, pipex);
@@ -75,8 +75,7 @@ void pipex(t_pipex pipex)
 		i++;
 	}
 	close_pfds();
-	while (pid > 0)
-		status = wait_child(pid);
+	status = wait_child();
 	return (status);
 }
 

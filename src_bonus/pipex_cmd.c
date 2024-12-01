@@ -6,14 +6,11 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 15:32:07 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/11/14 22:11:45 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/01 05:18:32 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-char	**ft_split(char const *s, char c);
+#include "../includes/pipex_bonus.h"
 
 char	*get_cmd_path(char *cmd, char **arr_path)
 {
@@ -55,36 +52,5 @@ void execute_cmd(int cmd_no, t_pipex *pipex)
 	if (!path)
 		pipex_error("PATH_ERROR"); // free cmd_arr
 	execve(path, cmd_arr, pipex -> envp);
-	pipex_error("EXECVE_FAIL);	
+	pipex_error("EXECVE_FAIL");	
 }
-		
-/*
-int main(int argc, char **argv, char **envp)
-{
-	char **path_array;
-//	char **cmd_path;
-	char **temp;
-
-
-	(void)argv;
-	(void)argc;
-	path_array = get_arr_path(envp);
-	temp = path_array;
-	while (*path_array)
-	{
-		printf("argv = %s_\n", *path_array);
-		path_array++;	
-	}
-	path_array = temp;
-	while (*temp)
-	{
-		printf("free = %s_\n", *temp);
-		free(*temp);
-		*temp =NULL;
-		temp++;
-	}
-	free(path_array);
-	path_array = NULL;
-
-}
-*/
