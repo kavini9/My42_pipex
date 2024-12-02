@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 15:32:07 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/01 05:18:32 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/02 21:31:44 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void execute_cmd(int cmd_no, t_pipex *pipex)
 	path = pipex -> path;
 	cmd_arr = ft_split(pipex -> av[cmd_no + 2 + heredoc], ' ');
 	if (!cmd_arr || !*cmd_arr)
-		pipex_error("CMDARRAY_ERROR");
+		pipex_error("");
 	if (!ft_strchr(*cmd_arr,'/'))
 		path = get_cmd_path(*cmd_arr, pipex -> arr_path);
 	else if (access(*cmd_arr, F_OK | R_OK | X_OK) == 0)
 		path = ft_strdup(*cmd_arr);
 	if (!path)
-		pipex_error("PATH_ERROR"); // free cmd_arr
+		pipex_error("path", pipex); // free cmd_arr
 	execve(path, cmd_arr, pipex -> envp);
-	pipex_error("EXECVE_FAIL");	
+	pipex_error("execve", pipex);	
 }

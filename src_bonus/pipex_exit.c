@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:37:16 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/11/30 19:42:21 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/02 21:31:49 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	close_pfds(t_pipex *pipex)
 {
 	int i;
 	i = 0;
-	while (i < pipex -> cmd_count - 1) //can this be zero at somepoint after redirecting
+	while (i < pipex -> cmd_count - 1)
 	{
 		if (pipex -> pfds[2 * i] > 0)
 			close(pipex -> pfds[2 * i]);
