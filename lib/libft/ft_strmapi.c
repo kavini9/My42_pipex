@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_main.c                                       :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 22:32:44 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/03 01:03:23 by wweerasi         ###   ########.fr       */
+/*   Created: 2024/05/07 00:03:15 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/05/07 00:32:52 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "libft.h"
 
-int	main(int ac, char **av, char **envp)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	t_pipex	pipex;
+	char			*dest;
+	unsigned int	index;
 
-	if (ac < 5)
+	dest = malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (dest == NULL)
+		return (NULL);
+	index = 0;
+	while (s[index] != '\0')
 	{
-		ft_putendl_fd("# Output: Error: Invalid number of arguments.\n
-			# Usage: ./pipex file1 cmd1 cmd2 file2", 2);
-		exit(EXIT_FAILURE);
+		dest[index] = f(index, s[index]);
+		index++;
 	}
-	pipex_init(&pipex, ac, av, envp);
-	pipex(&pipex);
-	pipex_exit(&pipex);
+	dest[index] = '\0';
+	return (dest);
 }

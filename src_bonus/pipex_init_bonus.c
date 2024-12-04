@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_init.c                                       :+:      :+:    :+:   */
+/*   pipex_init_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/30 19:36:53 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/02 21:31:46 by wweerasi         ###   ########.fr       */
+/*   Created: 2024/12/03 21:28:56 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/12/04 01:22:37 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,17 @@ void	init_pipeline(t_pipex *pipex)
 		pipex_error ("malloc", pipex);
 	while ( i < pipex -> cmd_count - 1)
 	{
-		if (pipe( pipex -> pfds[2 * i] < 0)
-			pipex_error("pipe", pipex);
+		if (pipe(pipex -> pfds + (2 * i)) < 0)
+			pipex_sys_error("pipe", pipex);
 		i++;
 	}
 }
 
 void	get_path_array(char **envp, t_pipex *pipex)
 {
-  char	**arr_path;
-
 	pipex -> arr_path = NULL;
 	if (!envp || !*envp)
-		pipex_error ("envp", pipex);
+		return;
 	while (*envp && ft_strncmp(*envp, "PATH=", 5))
 		envp++;
 	if (*envp)
@@ -45,13 +43,17 @@ void	get_path_array(char **envp, t_pipex *pipex)
 
 void pipex_init(t_pipex *pipex, int ac, char **av, char **envp)
 {
-	pipex -> infd = -1; //open(av[1], O_RDONLY);
-	pipex -> outfd = -1 //open(av[ac - 1], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (argc > 5 && ft_strcmp(av[1], "here_doc") == 0)
+	pipex -> infd = -1;
+	pipex -> outfd = -1;
+	pipex -> heredoc = 0;
+	if (ac > 5 && ft_strcmp(av[1], "here_doc") == 0)
 		pipex -> heredoc = 1;
 	pipex -> cmd_count = ac - 3 - pipex -> heredoc;
-	init_pipeline(pipex -> cmd_count, pipex);
-	pipex -> av = av;	
+	init_pipeline(pipex);
+	pipex -> status = EXIT_FAILURE;
+	pipex -> ac = ac;
+	pipex -> av = av;
+	pipex -> envp = envp;	
 	get_path_array(envp, pipex);
 	pipex -> cmd_arr = NULL;
 	pipex -> path = NULL;

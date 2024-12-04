@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 14:54:57 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/11/11 19:38:27 by wweerasi         ###   ########.fr       */
+/*   Created: 2024/04/28 20:56:06 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/04/28 21:23:02 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-
-typedef struct s_pipex
+void	ft_putnbr_fd(int n, int fd)
 {
-	int	infd;
-	int	outfd;
-	int	heredoc;
-	int	cmd_count;
-	pid_t	pid;
-	//char	***cmd
-} t_pipex
+	char	digit;
 
-#endif
+	if (n == -2147483648)
+	{
+		n = 147483648;
+		write(fd, "-2", 2);
+	}
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n = -1 * n;
+	}
+	if (n >= 10)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+	else
+	{
+		digit = n + '0';
+		write(fd, &digit, 1);
+	}
+}

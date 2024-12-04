@@ -1,4 +1,16 @@
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/29 12:23:14 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/05/07 21:29:26 by wweerasi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
 
 static char	**ft_split_alloc(char const *s, char c)
 {
@@ -84,35 +96,4 @@ char	**ft_split(char const *s, char c)
 		*tmp_split = 0;
 	}
 	return (split_s);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	while ((*s1 != '\0' || *s2 != '\0') && n--)
-	{
-		if (*(unsigned char *) s1 != *(unsigned char *) s2)
-			return (*(unsigned char *) s1 - *(unsigned char *) s2);
-		s1++;
-		s2++;
-	}
-	return (0);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*new_s;
-	int		len;
-
-	len = ft_strlen(s1) + ft_strlen(s2);
-	new_s = malloc((len + 1) * sizeof(char));
-	if (new_s != NULL)
-	{
-		while (*s1 != '\0')
-			*new_s++ = *s1++;
-		while (*s2 != '\0')
-			*new_s++ = *s2++;
-		*new_s = '\0';
-		new_s -= len;
-	}
-	return (new_s);
 }
