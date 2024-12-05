@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 21:24:45 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/04 23:21:16 by wweerasi         ###   ########.fr       */
+/*   Created: 2024/12/05 01:57:41 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/12/05 01:57:52 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../includes/pipex.h"
 
 void	dup_io(t_pipex *pipex, int rd_fd, int wr_fd)
 {

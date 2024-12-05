@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_exit_bonus.c                                 :+:      :+:    :+:   */
+/*   pipex_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 21:30:09 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/05 00:09:37 by wweerasi         ###   ########.fr       */
+/*   Created: 2024/12/05 01:59:11 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/12/05 01:59:22 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../includes/pipex.h"
 
 void	close_pfds(t_pipex *pipex)
 {

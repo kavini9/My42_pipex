@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_cmd_bonus.c                                  :+:      :+:    :+:   */
+/*   pipex_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 21:27:51 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/05 02:42:34 by wweerasi         ###   ########.fr       */
+/*   Created: 2024/12/05 01:58:43 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/12/05 02:12:44 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../includes/pipex.h"
 
 char	*get_cmd_path(char *cmd, t_pipex *pipex)
 {

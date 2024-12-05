@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_init_bonus.c                                 :+:      :+:    :+:   */
+/*   pipex_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 21:28:56 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/05 04:14:07 by wweerasi         ###   ########.fr       */
+/*   Created: 2024/12/05 01:58:13 by wweerasi          #+#    #+#             */
+/*   Updated: 2024/12/05 01:58:24 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex_bonus.h"
+#include "../includes/pipex.h"
 
 void	init_pipeline(t_pipex *pipex)
 {
 	int	i;
-	int	pipe_count;
 
 	i = 0;
-	pipe_count = pipex -> cmd_count - 1;
-	pipex -> pfds = malloc(2 * pipe_count * sizeof(int));
+	pipex -> pfds = malloc(2 * (pipex -> cmd_count - 1) * sizeof(int));
 	if (!pipex -> pfds)
 		pipex_error ("malloc: ", pipex);
-	else
-		ft_memset(pipex -> pfds, -1, 2 * pipe_count * sizeof(int));
-	while (i < pipe_count)
+	while (i < pipex -> cmd_count - 1)
 	{
 		if (pipe(pipex -> pfds + (2 * i)) < 0)
 			pipex_sys_error("pipe: ", ft_itoa(i), pipex);
