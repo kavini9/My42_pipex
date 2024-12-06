@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:27:51 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/05 02:42:34 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:45:42 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,20 @@ void	execute_cmd(int cmd_no, t_pipex *pipex)
 		pipex_error("cmd: ", pipex);
 	if (!ft_strchr(*cmd_arr, '/'))
 		path = get_cmd_path(*cmd_arr, pipex);
-	else if (access(*cmd_arr, F_OK | R_OK | X_OK) == 0)
-		path = ft_strdup(*cmd_arr);
+	else if (access(*cmd_arr, F_OK) == 0)
+	{
+		if (access(*cmd_arr, X_OK) == 0)
+			path = ft_strdup(*cmd_arr);
+		else
+			pipex -> status = X_KO;
+	}
+	else
+		pipex -> status = F_KO;
 	if (!path)
-		pipex_error("path: ", pipex);
+		pipex_sys_error("path: ",*cmd_arr, pipex);
 	execve(path, cmd_arr, pipex -> envp);
 	pipex_sys_error("execve: ", *cmd_arr, pipex);
 }
 //free_cmd was on line 53. see why. if that still matters?
 //handle cmd = "" and "    "
-//also when binary exist but not executable exit code should be 126;
+//also when binary exist but not executable exit code should be 126

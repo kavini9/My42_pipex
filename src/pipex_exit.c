@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 01:59:11 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/05 01:59:22 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/06 13:43:37 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	close_pfds(t_pipex *pipex)
 	int	i;
 
 	if (!pipex -> pfds)
-		return;
+		return ;
 	i = 0;
 	while (i < pipex -> cmd_count - 1)
 	{
@@ -62,7 +62,7 @@ void	pipex_clean(t_pipex *pipex)
 void	pipex_sys_error(char *sys_call, char *param, t_pipex *pipex)
 {
 	ft_putstr_fd(sys_call, STDERR_FILENO);
-	ft_putstr_fd(param , STDERR_FILENO);
+	ft_putstr_fd(param, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	pipex_clean(pipex);
