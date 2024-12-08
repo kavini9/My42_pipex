@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:27:51 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/06 14:45:42 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/07 18:08:27 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*get_cmd_path(char *cmd, t_pipex *pipex)
 			else
 				pipex -> status = X_KO;
 		}
+		else
+			pipex -> status = F_KO;
 		free(cmd_path);
 		pipex -> arr_path++;
 	}

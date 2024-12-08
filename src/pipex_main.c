@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 01:54:47 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/05 02:14:35 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/08 08:58:16 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
 
+	ft_memset(&pipex, 0, sizeof(t_pipex));
 	if (ac != 5)
 	{
 		ft_putendl_fd("# Output: Error: Invalid number of arguments."

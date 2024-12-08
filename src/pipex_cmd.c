@@ -6,17 +6,30 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 01:58:43 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/06 15:26:05 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/08 09:23:30 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
-
+/*
+static int	is_empty(char *str)
+{
+	if (*str == '\0')
+		return (1);
+	while (*str)
+	{
+		if (*str >= 9 && *str <= 13)
+			return (0);
+		str++;
+	}
+	return (1);
+}
+*/
 int	access_check(char *cmd, t_pipex *pipex)
 {
 	if (access(cmd, F_OK) == 0)
 	{
-		if (access(cmd, X_KO) == 0)
+		if (access(cmd, X_OK) == 0)
 			return (0);
 		else
 			pipex -> status = X_KO;
@@ -28,30 +41,25 @@ int	access_check(char *cmd, t_pipex *pipex)
 
 char	*get_cmd_path(char *cmd, t_pipex *pipex)
 {
+	char	**arr_path;
 	char	*cmd_path;
 	char	*tmp;
 
-	while (*pipex -> arr_path)
+	arr_path = pipex -> arr_path;
+	while (arr_path && *arr_path)
 	{
 		cmd_path = ft_strjoin("/", cmd);
 		tmp = cmd_path;
 		if (cmd_path)
-			cmd_path = ft_strjoin(*pipex -> arr_path, tmp);
+			cmd_path = ft_strjoin(*arr_path, tmp);
 		if (tmp)
 			free(tmp);
 		if (!cmd_path)
 			return (NULL);
 		if (access_check(cmd_path, pipex) == 0)
-			return(cmd_path);
-	//	if (access(cmd_path, F_OK) == 0)
-	//	{
-	//		if (access(cmd_path, X_OK) == 0)
-	//			return (cmd_path);
-	//		else
-	//			pipex -> status = X_KO;
-	//	}
+			return (cmd_path);
 		free(cmd_path);
-		pipex -> arr_path++;
+		arr_path++;
 	}
 	return (ft_strdup(cmd));
 }
@@ -59,10 +67,12 @@ char	*get_cmd_path(char *cmd, t_pipex *pipex)
 void	execute_cmd(int cmd_no, t_pipex *pipex)
 {
 	char	**cmd_arr;
+	char	*cmd;
 	char	*path;
 
+	cmd = pipex -> av[cmd_no + 2 + pipex -> heredoc];
 	path = pipex -> path;
-	cmd_arr = ft_split(pipex -> av[cmd_no + 2 + pipex -> heredoc], ' ');
+	cmd_arr = ft_split(cmd, ' ');
 	pipex -> cmd_arr = cmd_arr;
 	if (!cmd_arr || !*cmd_arr)
 		pipex_error("cmd: ", pipex);
@@ -70,15 +80,6 @@ void	execute_cmd(int cmd_no, t_pipex *pipex)
 		path = get_cmd_path(*cmd_arr, pipex);
 	else if (access_check(*cmd_arr, pipex) == 0)
 		path = ft_strdup(*cmd_arr);
-//	else if (access(*cmd_arr, F_OK) == 0)
-//	{
-//		if (access(*cmd_arr, X_OK) == 0)
-//			path = ft_strdup(*cmd_arr);
-//		else
-//			pipex -> status = X_KO;
-//	}
-//	else
-//		pipex -> status = F_KO;
 	if (!path)
 		pipex_sys_error("path: ", *cmd_arr, pipex);
 	execve(path, cmd_arr, pipex -> envp);

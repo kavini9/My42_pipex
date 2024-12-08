@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 21:16:34 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/05 02:13:26 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/07 23:10:08 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	get_path_array(char **envp, t_pipex *pipex);
 
 void	execute_cmd(int cmd_no, t_pipex *pipex);
 char	*get_cmd_path(char *cmd, t_pipex *pipex);
+int	access_check(char *cmd, t_pipex *pipex);
 
 void	pipex_sys_error(char *sys_call, char *param, t_pipex *pipex);
 void	pipex_error(char *err_note, t_pipex *pipex);

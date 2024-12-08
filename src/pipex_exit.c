@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 01:59:11 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/06 13:43:37 by wweerasi         ###   ########.fr       */
+/*   Updated: 2024/12/08 09:35:38 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,47 @@ void	free_arr(char ***arr)
 	char	**tmp;
 
 	tmp = *arr;
-	while (*arr && **arr)
+	if (!tmp)
+		return ;
+	while (*tmp)
 	{
-		free(**arr);
-		**arr = NULL;
-		(*arr)++;
+		free(*tmp);
+		*tmp = NULL;
+		tmp++;
 	}
-	free(tmp);
-	tmp = NULL;
+	free(*arr);
+	*arr = NULL;
 }
 
+/*
 void	pipex_clean(t_pipex *pipex)
 {
-	free_arr(&(pipex -> arr_path));
-	free_arr(&(pipex -> cmd_arr));
+	if (pipex -> arr_path)
+		free_arr(&(pipex -> arr_path));
+	if (pipex -> cmd_arr)
+		free_arr(&(pipex -> cmd_arr));
 	if (pipex -> path)
 		free(pipex -> path);
 	close_pfds(pipex);
+}*/
+
+void	pipex_clean(t_pipex *pipex)
+{
+	if (pipex -> arr_path)
+		free_arr(&(pipex -> arr_path));
+	if (pipex -> cmd_arr)
+		free_arr(&(pipex -> cmd_arr));
+	if (pipex -> path)
+	{
+		free(pipex -> path);
+		pipex -> path = NULL;
+	}
+	if (pipex -> pfds)
+	{
+		close_pfds(pipex);
+		free(pipex -> pfds);
+		pipex -> pfds = NULL;
+	}
 }
 
 void	pipex_sys_error(char *sys_call, char *param, t_pipex *pipex)
