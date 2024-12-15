@@ -15,6 +15,7 @@
 
 # define X_KO 126
 # define F_KO 127
+# define CMD_NOT_FOUND "Command not found"
 
 # include "../lib/libft/libft.h"
 
@@ -40,6 +41,7 @@ typedef struct s_pipex
 	char	**arr_path;
 	char	**cmd_arr;
 	char	*path;
+	char	*err_note;
 }	t_pipex;
 
 void	ft_pipex(t_pipex *pipex);
