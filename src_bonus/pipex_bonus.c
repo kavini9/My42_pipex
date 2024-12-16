@@ -37,7 +37,7 @@ void	redirect_io(int i, t_pipex *pipex)
 		open_file(i, &(pipex -> infd), pipex -> av[1], pipex);
 		dup_io(pipex, pipex -> infd, pipex -> pfds[1]);
 		close(pipex -> infd);
-	}	
+	}
 	else if (i == pipex -> cmd_count - 1)
 	{
 		open_file(i, &(pipex -> outfd), pipex -> av[pipex -> ac - 1], pipex);
