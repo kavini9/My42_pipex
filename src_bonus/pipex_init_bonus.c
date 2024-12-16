@@ -41,6 +41,8 @@ void	get_path_array(char **envp, t_pipex *pipex)
 		envp++;
 	if (*envp)
 		pipex -> arr_path = ft_split(*envp + 5, ':');
+	else
+		return ;
 	if (!pipex -> arr_path)
 		pipex_error("split: ", pipex);
 }
@@ -53,12 +55,13 @@ void	pipex_init(t_pipex *pipex, int ac, char **av, char **envp)
 	if (ac > 5 && ft_strcmp(av[1], "here_doc") == 0)
 		pipex -> heredoc = 1;
 	pipex -> cmd_count = ac - 3 - pipex -> heredoc;
-	init_pipeline(pipex);
 	pipex -> status = EXIT_FAILURE;
 	pipex -> ac = ac;
 	pipex -> av = av;
 	pipex -> envp = envp;
-	get_path_array(envp, pipex);
 	pipex -> cmd_arr = NULL;
 	pipex -> path = NULL;
+	pipex -> err_note = NULL;
+	init_pipeline(pipex);
+	get_path_array(envp, pipex);
 }
