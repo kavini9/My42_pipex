@@ -55,7 +55,7 @@ void	free_arr(char ***arr)
 void	pipex_clean(t_pipex *pipex)
 {
 	if (pipex -> arr_path)
-		free_arr(&(pipex -> arr_path));			
+		free_arr(&(pipex -> arr_path));
 	if (pipex -> cmd_arr)
 		free_arr(&(pipex -> cmd_arr));
 	if (pipex -> path)

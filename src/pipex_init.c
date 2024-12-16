@@ -36,7 +36,7 @@ void	get_path_array(char **envp, t_pipex *pipex)
 {
 	pipex -> arr_path = NULL;
 	if (!envp || !*envp)
-		return;
+		return ;
 	while (*envp && ft_strncmp(*envp, "PATH=", 5))
 		envp++;
 	if (*envp)
@@ -46,7 +46,7 @@ void	get_path_array(char **envp, t_pipex *pipex)
 	if (!pipex -> arr_path)
 		pipex_error("split: ", pipex);
 }
-//when the path is given like ex: /usr/bin/cat , because the pipex -> arr_ path iis still null it causes a error instead of executing correctly is still not found 
+
 void	pipex_init(t_pipex *pipex, int ac, char **av, char **envp)
 {
 	pipex -> infd = -1;

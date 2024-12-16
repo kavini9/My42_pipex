@@ -27,7 +27,7 @@ static int	is_empty(char *str)
 
 static char	**arrdup_empty(char *cmd)
 {
-	char **cmd_arr;
+	char	**cmd_arr;
 
 	cmd_arr = malloc(2 * sizeof(char *));
 	if (cmd_arr)
@@ -94,7 +94,7 @@ void	execute_cmd(int cmd_no, t_pipex *pipex)
 		pipex_error("cmd: ", pipex);
 	if (*cmd_arr && !ft_strchr(*cmd_arr, '/'))
 		pipex -> path = get_cmd_path(*cmd_arr, pipex);
-	else if (*cmd_arr)// && access_check(*cmd_arr, pipex) == 0)
+	else if (*cmd_arr)
 	{
 		access_check(*cmd_arr, pipex);
 		pipex -> path = ft_strdup(*cmd_arr);
