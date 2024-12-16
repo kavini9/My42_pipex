@@ -40,23 +40,35 @@ void	free_arr(char ***arr)
 	char	**tmp;
 
 	tmp = *arr;
-	while (*arr && **arr)
+	if (!tmp)
+		return ;
+	while (*tmp)
 	{
-		free(**arr);
-		**arr = NULL;
-		(*arr)++;
+		free(*tmp);
+		*tmp = NULL;
+		tmp++;
 	}
-	free(tmp);
-	tmp = NULL;
+	free(*arr);
+	*arr = NULL;
 }
 
 void	pipex_clean(t_pipex *pipex)
 {
-	free_arr(&(pipex -> arr_path));
-	free_arr(&(pipex -> cmd_arr));
+	if (pipex -> arr_path)
+		free_arr(&(pipex -> arr_path));
+	if (pipex -> cmd_arr)
+		free_arr(&(pipex -> cmd_arr));
 	if (pipex -> path)
+	{
 		free(pipex -> path);
-	close_pfds(pipex);
+		pipex -> path = NULL;
+	}
+	if (pipex -> pfds)
+	{
+		close_pfds(pipex);
+		free(pipex -> pfds);
+		pipex -> pfds = NULL;
+	}
 }
 
 void	pipex_sys_error(char *sys_call, char *param, t_pipex *pipex)
@@ -64,7 +76,10 @@ void	pipex_sys_error(char *sys_call, char *param, t_pipex *pipex)
 	ft_putstr_fd(sys_call, STDERR_FILENO);
 	ft_putstr_fd(param, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	if (pipex -> err_note)
+		ft_putendl_fd(pipex -> err_note, STDERR_FILENO);
+	else
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	pipex_clean(pipex);
 	exit(pipex -> status);
 }
