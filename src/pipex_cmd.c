@@ -104,6 +104,3 @@ void	execute_cmd(int cmd_no, t_pipex *pipex)
 	execve(pipex -> path, cmd_arr, pipex -> envp);
 	pipex_sys_error("execve: ", *cmd_arr, pipex);
 }
-//free_cmd was on line 53. see why. if that still matters?
-//handle cmd = "" and "    "
-//also when binary exist but not executable exit code should be 126;
