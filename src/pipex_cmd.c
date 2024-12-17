@@ -45,9 +45,12 @@ int	access_check(char *cmd, t_pipex *pipex)
 		if (access(cmd, X_OK) == 0)
 			return (0);
 		else
+		{
 			pipex -> status = X_KO;
+			pipex -> err_note = strerror(errno);
+		}
 	}
-	else
+	else if (pipex -> status != X_KO)
 		pipex -> status = F_KO;
 	return (-1);
 }
@@ -74,8 +77,10 @@ char	*get_cmd_path(char *cmd, t_pipex *pipex)
 		free(cmd_path);
 		arr_path++;
 	}
-	pipex -> status = F_KO;
-	pipex -> err_note = CMD_NOT_FOUND;
+	if (pipex -> status != X_KO)
+		pipex -> status = F_KO;
+	if (pipex -> err_note == NULL)
+		pipex -> err_note = CMD_NOT_FOUND;
 	return (ft_strdup(cmd));
 }
 
