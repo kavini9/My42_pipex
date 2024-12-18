@@ -25,7 +25,7 @@ void	open_file(int i, int *fd, char *file, t_pipex *pipex)
 	if (i == 0)
 		*fd = open(file, O_RDONLY);
 	else
-		*fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		*fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (*fd < 0)
 		pipex_sys_error("open: ", file, pipex);
 }
@@ -36,6 +36,8 @@ void	redirect_io(int i, t_pipex *pipex)
 	{
 		open_file(i, &(pipex -> infd), pipex -> av[1], pipex);
 		dup_io(pipex, pipex -> infd, pipex -> pfds[1]);
+		if (pipex -> heredoc == 1)
+			unlink("here_doc");
 		close(pipex -> infd);
 	}
 	else if (i == pipex -> cmd_count - 1)

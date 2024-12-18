@@ -22,6 +22,13 @@ int	main(int ac, char **av, char **envp)
 			"\n# Usage: ./pipex file1 cmd1 cmd2 file2", 2);
 		exit(EXIT_FAILURE);
 	}
+	else if (ft_strcmp(av[1], "here_doc") == 0 && ac == 5)
+	{
+		ft_putendl_fd("# Output: Error: Invalid number of arguments."
+			"\n# Usage: ./pipex_bonus here_doc  LIMITER cmd1 cmd2 "
+			"file", 2);
+		exit(EXIT_FAILURE);
+	}
 	pipex_init(&pipex, ac, av, envp);
 	ft_pipex(&pipex);
 	exit(pipex.status);

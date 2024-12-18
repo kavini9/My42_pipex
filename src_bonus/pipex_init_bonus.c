@@ -12,6 +12,32 @@
 
 #include "../includes/pipex_bonus.h"
 
+void	here_doc(t_pipex *pipex)
+{
+	int		temp_fd;
+	char	*line;
+
+	temp_fd = open("here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (temp_fd < 0)
+		pipex_sys_error("open: ", "here_doc", pipex);
+	while (1)
+	{
+		write(STDOUT_FILENO, ">", 1);
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
+		if (ft_strncmp(line, pipex -> av[2], ft_strlen(pipex -> av[2])) == 0
+			&& line[ft_strlen(pipex -> av[2])] == '\n')
+			break ;
+		write(temp_fd, line, ft_strlen(line));
+		free(line);
+	}
+	if (!line)
+		pipex_error("gnl: ", pipex);
+	free(line);
+	close(temp_fd);
+}
+
 void	init_pipeline(t_pipex *pipex)
 {
 	int	i;
@@ -62,6 +88,8 @@ void	pipex_init(t_pipex *pipex, int ac, char **av, char **envp)
 	pipex -> cmd_arr = NULL;
 	pipex -> path = NULL;
 	pipex -> err_note = NULL;
+	if (pipex -> heredoc == 1 && ac > 5)
+		here_doc(pipex);
 	init_pipeline(pipex);
 	get_path_array(envp, pipex);
 }

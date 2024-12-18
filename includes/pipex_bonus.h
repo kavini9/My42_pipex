@@ -18,6 +18,7 @@
 # define CMD_NOT_FOUND "Command not found"
 
 # include "../lib/libft/libft.h"
+# include "../lib/libft/gnl/get_next_line.h"
 
 # include <unistd.h>
 # include <fcntl.h>
@@ -53,6 +54,7 @@ void	wait_child(int i, pid_t pid, t_pipex *pipex);
 void	pipex_init(t_pipex *pipex, int ac, char **av, char **envp);
 void	init_pipeline(t_pipex *pipex);
 void	get_path_array(char **envp, t_pipex *pipex);
+void	here_doc(t_pipex *pipex);
 
 void	execute_cmd(int cmd_no, t_pipex *pipex);
 char	*get_cmd_path(char *cmd, t_pipex *pipex);

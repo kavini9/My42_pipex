@@ -12,6 +12,8 @@
 
 NAME = libft.a
 
+GNL_DIR = gnl
+
 SOURCES = ft_isalpha.c \
 		  ft_isdigit.c \
 		  ft_isalnum.c \
@@ -59,10 +61,13 @@ BONUS_SOURCES = ft_lstnew_bonus.c \
 				ft_lstiter_bonus.c \
 				ft_lstmap_bonus.c \
 
+GNL_SOURCES = $(GNL_DIR)/get_next_line.c
+
 OBJECTS = $(SOURCES:.c=.o)
 BONUS_OBJECTS = $(BONUS_SOURCES:.c=.o)
+GNL_OBJECTS = $(notdir $(GNL_SOURCES:.c=.o))
 
-HEADER = libft.h
+HEADER = libft.h $(GNL_DIR)/get_next_line.h
 
 CC = cc
 
@@ -77,8 +82,11 @@ all: $(NAME)
 %.o:%.c $(HEADER)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(NAME): $(OBJECTS)
-	$(AR) $(NAME) $(OBJECTS)
+%.o: $(GNL_DIR)/%.c $(HEADER)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME): $(OBJECTS) $(GNL_OBJECTS)
+	$(AR) $(NAME) $(OBJECTS) $(GNL_OBJECTS)
 
 bonus: .bonus
 
@@ -87,7 +95,7 @@ bonus: .bonus
 	@touch .bonus
 
 clean:
-	$(RM) $(OBJECTS) $(BONUS_OBJECTS)
+	$(RM) $(OBJECTS) $(BONUS_OBJECTS) $(GNL_OBJECTS)
 	@$(RM) .bonus
 
 fclean: clean
