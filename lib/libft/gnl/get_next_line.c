@@ -95,7 +95,7 @@ char	*get_next_line(int fd)
 	}
 	line = l_read(fd, buffer, &stash);
 	ft_free(&buffer);
-	if (!line)
+	if (!line || !*stash)
 		ft_free(&stash);
 	return (line);
 }
