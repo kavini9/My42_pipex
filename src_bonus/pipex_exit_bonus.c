@@ -81,6 +81,8 @@ void	pipex_sys_error(char *sys_call, char *param, t_pipex *pipex)
 	else
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	pipex_clean(pipex);
+	if (ft_isdigit(*param))
+		free(param);
 	exit(pipex -> status);
 }
 

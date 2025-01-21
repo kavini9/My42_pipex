@@ -16,7 +16,6 @@ int	main(int ac, char **av, char **envp)
 {
 	t_pipex	pipex;
 
-	ft_memset(&pipex, 0, sizeof(t_pipex));
 	if (ac != 5)
 	{
 		ft_putendl_fd("# Output: Error: Invalid number of arguments."
