@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:27:51 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/07 18:08:27 by wweerasi         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:16:38 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,13 @@ static char	**arrdup_empty(char *cmd)
 	if (cmd_arr)
 	{
 		cmd_arr[0] = ft_strdup(cmd);
-		cmd_arr[1] = NULL;
+		if (cmd_arr[0])
+			cmd_arr[1] = NULL;
+		else
+		{
+			free(cmd_arr);
+			cmd_arr = NULL;
+		}
 	}
 	return (cmd_arr);
 }
@@ -71,7 +77,7 @@ char	*get_cmd_path(char *cmd, t_pipex *pipex)
 		if (tmp)
 			free(tmp);
 		if (!cmd_path)
-			return (NULL);
+			pipex_error("cmd_path: malloc failed", pipex);
 		if (access_check(cmd_path, pipex) == 0)
 			return (cmd_path);
 		free(cmd_path);
@@ -96,7 +102,7 @@ void	execute_cmd(int cmd_no, t_pipex *pipex)
 		cmd_arr = ft_split(cmd, ' ');
 	pipex -> cmd_arr = cmd_arr;
 	if (!cmd_arr)
-		pipex_error("cmd: ", pipex);
+		pipex_error("cmd_arr: malloc failed", pipex);
 	if (*cmd_arr && !ft_strchr(*cmd_arr, '/'))
 		pipex -> path = get_cmd_path(*cmd_arr, pipex);
 	else if (*cmd_arr)
@@ -105,7 +111,7 @@ void	execute_cmd(int cmd_no, t_pipex *pipex)
 		pipex -> path = ft_strdup(*cmd_arr);
 	}
 	if (!pipex -> path)
-		pipex_sys_error("path: ", *cmd_arr, pipex);
+		pipex_sys_error("access: ", *cmd_arr, pipex);
 	execve(pipex -> path, cmd_arr, pipex -> envp);
 	pipex_sys_error("execve: ", *cmd_arr, pipex);
 }

@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 01:58:13 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/08 09:35:32 by wweerasi         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:31:22 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_pipeline(t_pipex *pipex)
 	pipe_count = pipex -> cmd_count - 1;
 	pipex -> pfds = malloc(2 * pipe_count * sizeof(int));
 	if (!pipex -> pfds)
-		pipex_error ("malloc: ", pipex);
+		pipex_error ("pipe_fds: malloc failed", pipex);
 	else
 		ft_memset(pipex -> pfds, -1, 2 * pipe_count * sizeof(int));
 	while (i < pipe_count)
@@ -44,17 +44,14 @@ void	get_path_array(char **envp, t_pipex *pipex)
 	else
 		return ;
 	if (!pipex -> arr_path)
-		pipex_error("split: ", pipex);
+		pipex_error("path_arr: malloc failed ", pipex);
 }
 
 void	pipex_init(t_pipex *pipex, int ac, char **av, char **envp)
 {
 	pipex -> infd = -1;
 	pipex -> outfd = -1;
-	pipex -> heredoc = 0;
-	if (ac > 5 && ft_strcmp(av[1], "here_doc") == 0)
-		pipex -> heredoc = 1;
-	pipex -> cmd_count = ac - 3 - pipex -> heredoc;
+	pipex -> cmd_count = ac - 3;
 	pipex -> status = EXIT_FAILURE;
 	pipex -> ac = ac;
 	pipex -> av = av;
@@ -62,6 +59,6 @@ void	pipex_init(t_pipex *pipex, int ac, char **av, char **envp)
 	pipex -> cmd_arr = NULL;
 	pipex -> path = NULL;
 	pipex -> err_note = NULL;
-	init_pipeline(pipex);
 	get_path_array(envp, pipex);
+	init_pipeline(pipex);
 }

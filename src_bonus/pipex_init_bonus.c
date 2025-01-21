@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:28:56 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/05 04:14:07 by wweerasi         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:39:08 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	here_doc(t_pipex *pipex)
 		free(line);
 	}
 	if (!line)
-		pipex_error("gnl: ", pipex);
+		pipex_error("here_doc: get_next_line failed", pipex);
 	free(line);
 	close(temp_fd);
 }
@@ -47,7 +47,7 @@ void	init_pipeline(t_pipex *pipex)
 	pipe_count = pipex -> cmd_count - 1;
 	pipex -> pfds = malloc(2 * pipe_count * sizeof(int));
 	if (!pipex -> pfds)
-		pipex_error ("malloc: ", pipex);
+		pipex_error ("pipe_fds: malloc failed", pipex);
 	else
 		ft_memset(pipex -> pfds, -1, 2 * pipe_count * sizeof(int));
 	while (i < pipe_count)
@@ -70,7 +70,7 @@ void	get_path_array(char **envp, t_pipex *pipex)
 	else
 		return ;
 	if (!pipex -> arr_path)
-		pipex_error("split: ", pipex);
+		pipex_error("path_arr: malloc failed ", pipex);
 }
 
 void	pipex_init(t_pipex *pipex, int ac, char **av, char **envp)
@@ -90,6 +90,6 @@ void	pipex_init(t_pipex *pipex, int ac, char **av, char **envp)
 	pipex -> err_note = NULL;
 	if (pipex -> heredoc == 1 && ac > 5)
 		here_doc(pipex);
-	init_pipeline(pipex);
 	get_path_array(envp, pipex);
+	init_pipeline(pipex);
 }

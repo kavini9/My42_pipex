@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 01:59:11 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/08 09:35:38 by wweerasi         ###   ########.fr       */
+/*   Updated: 2025/01/21 19:20:01 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,15 @@ void	pipex_sys_error(char *sys_call, char *param, t_pipex *pipex)
 	else
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	pipex_clean(pipex);
+	if (ft_isdigit(*param))
+		free(param);
 	exit(pipex -> status);
 }
 
 void	pipex_error(char *err_note, t_pipex *pipex)
 {
-	ft_putstr_fd(err_note, STDERR_FILENO);
-	ft_putstr_fd(":", STDERR_FILENO);
+	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	ft_putendl_fd(err_note, STDERR_FILENO);
 	pipex_clean(pipex);
 	exit(pipex -> status);
 }

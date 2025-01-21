@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 21:30:09 by wweerasi          #+#    #+#             */
-/*   Updated: 2024/12/08 09:36:10 by wweerasi         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:54:35 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void	pipex_sys_error(char *sys_call, char *param, t_pipex *pipex)
 
 void	pipex_error(char *err_note, t_pipex *pipex)
 {
-	ft_putstr_fd(err_note, STDERR_FILENO);
-	ft_putstr_fd(":", STDERR_FILENO);
+	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	ft_putendl_fd(err_note, STDERR_FILENO);
 	pipex_clean(pipex);
 	exit(pipex -> status);
 }
