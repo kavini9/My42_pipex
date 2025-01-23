@@ -1,0 +1,106 @@
+What happens if fork error occurs and parent exit without waiting for already forked child processes ?
+------------------------------------------------------------------------------------------------------
+
+//modified ft_pipex to simulate fork error
+
+void    ft_pipex(t_pipex *pipex)
+{
+        int             i;
+        pid_t   pid;
+
+        i = 0;
+        while (i < pipex -> cmd_count)
+        {
+                if (i != 1)
+                        pid = fork();
+                else
+                        pid = -1;
+                if (pid < 0)
+                        pipex_sys_error("fork: ", ft_itoa(i), pipex);
+                else if (pid == 0)
+                {
+                        redirect_io(i, pipex);
+                        execute_cmd(i, pipex);
+                }
+                sleep(5);
+                i++;
+        }
+        pipex_clean(pipex);
+        wait_child(i, pid, pipex);
+}
+
+ GPT suggested 
+
+- Run pipex in the background.
+ ./pipex Makefile "sleep 15" ls outfile &
+
+- Use the watch command to check if any processes appear with PPID = 1
+watch -n 1 'ps -o pid,ppid,state,cmd | awk "\$2 == 1 { print \$0 }"'
+
+this didn't show any process with PPID = 1
+########################################################################
+
+So I tried
+
+-----------------------------------------------------------------------
+% ./pipex Makefile "sleep 15" ls outfile &
+[1] 305474								//process starts in background with PID 305474
+fork: 1: Success                                                                                                                                                                                
+[1]  + exit 1     ./pipex Makefile "sleep 15" ls outfile		//process ends
+wweerasi@c1r2p5 ~/evals/mb_pipex
+ % ps -o pid,ppid,cmd                      
+    PID    PPID CMD
+ 288378  286585 zsh
+ 305476  284892 sleep 15						//sleep 5 still exsist with PPID 284892 which is not the PID of pipex
+ 305478  288378 ps -o pid,ppid,cmd
+wweerasi@c1r2p5 ~/evals/mb_pipex
+ % ps -o pid,ppid,cmd
+    PID    PPID CMD
+ 288378  286585 zsh
+ 305481  288378 ps -o pid,ppid,cmd
+------------------------------------------------------------------------
+
+Here even after the pipex has exited the sleep process exsists with PPID = 284892, which is not 1.
+
+I also retried this with my own binary with the following program.
+----------------------------------------
+orphan_child.c
+
+#include <unistd.h>
+
+int main(void)
+{
+        sleep(15);
+        write(2,"Wide awake\n", 12);
+        return(0);
+}
+
+----------------------------------------
+(run following line to compile)
+cc orphan_child.c -o orphan_child 
+
+-----------------------------------------------------------------------
+ % ./pipex Makefile "orphan_child" ls outfile &
+[1] 305691
+wweerasi@c1r2p5 ~/evals/mb_pipex
+ % ps -o pid,ppid,cmd                          
+    PID    PPID CMD
+ 288378  286585 zsh
+ 305691  288378 ./pipex Makefile orphan_child ls outfile
+ 305693  305691 orphan_child
+ 305695  288378 ps -o pid,ppid,cmd
+wweerasi@c1r2p5 ~/evals/mb_pipex
+ % fork: 1: Success
+
+[1]  + exit 1     ./pipex Makefile "orphan_child" ls outfile
+wweerasi@c1r2p5 ~/evals/mb_pipex
+ % ps -o pid,ppid,cmd                          
+    PID    PPID CMD
+ 288378  286585 zsh
+ 305693  284892 orphan_child
+ 305698  288378 ps -o pid,ppid,cmd
+wweerasi@c1r2p5 ~/evals/mb_pipex
+ % Wide awake
+----------------------------------------------------------------------
+
+
