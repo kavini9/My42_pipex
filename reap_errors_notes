@@ -44,14 +44,14 @@ So I tried
 
 -----------------------------------------------------------------------
 % ./pipex Makefile "sleep 15" ls outfile &
-[1] 305474								//process starts in background with PID 305474
-fork: 1: Success                                                                                                                                                                                
-[1]  + exit 1     ./pipex Makefile "sleep 15" ls outfile		//process ends
+[1] 305474						        //process starts in background with PID 305474
+fork: 1: Success                                                //fork 1 fail log. prints success because I use strerrror() and fork fail is not real.                                                                                                                     
+[1]  + exit 1     ./pipex Makefile "sleep 15" ls outfile	//process ends
 wweerasi@c1r2p5 ~/My42/pipex
  % ps -o pid,ppid,cmd                      
     PID    PPID CMD
  288378  286585 zsh
- 305476  284892 sleep 15						//sleep 5 still exsist with PPID 284892 which is not the PID of pipex
+ 305476  284892 sleep 15					//sleep 5 still exsist with PPID 284892 which is not the PID of pipex
  305478  288378 ps -o pid,ppid,cmd
 wweerasi@c1r2p5 ~/My42/pipex
  % ps -o pid,ppid,cmd
