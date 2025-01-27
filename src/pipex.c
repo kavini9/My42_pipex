@@ -6,7 +6,7 @@
 /*   By: wweerasi <wweerasi@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 01:57:41 by wweerasi          #+#    #+#             */
-/*   Updated: 2025/01/22 16:02:07 by wweerasi         ###   ########.fr       */
+/*   Updated: 2025/01/24 14:38:21 by wweerasi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ void	ft_pipex(t_pipex *pipex)
 	{
 		pid = fork();
 		if (pid < 0)
+		{
+			wait_child(i, pid, pipex);
 			pipex_sys_error("fork: ", ft_itoa(i), pipex);
+		}
 		else if (pid == 0)
 		{
 			redirect_io(i, pipex);
